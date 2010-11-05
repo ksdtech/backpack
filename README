@@ -1,0 +1,26 @@
+This python script is intended to abstract the process of connecting to a network-based home 
+directory, as well as providing triggers for other logging processes after authenticating to 
+the file-server.
+
+The script creates a graphical login window which prompts the user for a username and password, 
+which it then uses to connect to an AFP server.  If it fails it prompts the user to re-enter 
+their credentials, and if it succeeds it mounts the users network home directory and then stores 
+the authenticated username and password as base64 encoded (note: this is NOT encryption, just 
+obfuscation) values in a plist which it saves to the users's Library/Caches folder.
+
+Requirements:
+Python 2.6 or newer (we use 2.6.5)
+wxPython 2.8 or newer
+py2app (used to turn the script into an OS X executable)
+
+Installation:
+1. Copy Backpack.py and Backpack.icns to the target system.
+2. Create the python setup file:
+	py2applet --make-setup Backpack.py --iconfile Backpack.icns
+3. Compile a py2app application (NOTE: the "-A" creates an aliased application, which means the 
+application will need to still have access to these original files; it cannot be moved to a system
+without the backpack.py script, and they cannot be moved.  The application will also require that 
+the same version of python be available.  Leaving this off will result in a longer compile time 
+and larger app bundle, but will create a standalone application):
+	python setup.py py2app -A
+
