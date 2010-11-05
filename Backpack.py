@@ -4,10 +4,6 @@
 # Purpose:      An AFP network share front-end
 #
 # Author:       Andrew Korff
-#
-# Created:      A long time ago, in a galaxy far, far away...
-# Copyright:    N/A
-# Licence:      wxWidgets license
 #----------------------------------------------------------------------------
 
 # NOTE: this sample requires wxPython 2.6 or newer
