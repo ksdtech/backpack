@@ -4,6 +4,11 @@
 # Purpose:      An AFP network share front-end
 #
 # Author:       Andrew Korff
+#
+# Created:      A long time ago, in a galaxy far, far away...
+# Last Edited:	2011.08.04
+# Copyright:    N/A
+# Licence:      wxWidgets license
 #----------------------------------------------------------------------------
 
 # NOTE: this sample requires wxPython 2.6 or newer
@@ -36,7 +41,7 @@ class MyFrame(wx.Frame):
 			else:
 				mntPoint = '/Volumes/%s' % base64.b64decode(cachedPlist["cachedA"])
 				if os.path.isdir(mntPoint): # Check whether mountpoint already exists, in case student is running it again.
-					if os.path.ismount(mntPoint): # Check it it's actually a mountpoint.
+					if os.path.ismount(mntPoint): # Check if it's actually a mountpoint.
 						subprocess.check_call(['open', mntPoint]) # If so, then why don't we just open that thing up?
 						self.closeApp(None)
 
@@ -150,17 +155,19 @@ class MyFrame(wx.Frame):
 							except subprocess.CalledProcessError as err:
 								print "CalledProcessError! {0}".format(err.returncode)
 						if err.returncode == 1: # Could be because the home already exists, somehow.
-							self.postMessage(("Unable to create Backpack Mountpoint.", "Please contact the System Administrator."))
+							self.postMessage(("Unable to create Backpack mountpoint.", "Please contact the System Administrator."))
 						elif err.returncode == 2:
 							self.postMessage(("Unable to mount Backpack at %s." % mntPoint, "Please contact the System Administrator."))
 						elif err.returncode == 97:
 							self.postMessage(("You entered an invalid username or password.", "Please try again."))
+						elif err.returncode == 101:
+							self.postMessage(("Unable to connect to Backpack.", "Disconnect any server connections on the Desktop and try again."))
 						elif err.returncode == 120:
 							self.postMessage(("You entered an invalid username or password.", "Please try again."))
 						elif err.returncode == 211:
 							self.postMessage(("Unable to contact server.", "Please verify your network connection and try again."))
 						else:
-							self.postMessage(("There was an error mounting your Backpack.", "Please contact the System Administrator."))
+							self.postMessage(("There was an error mounting your Backpack. % d" % err.returncode, "Please contact the System Administrator."))
 					else: # We were successfully able to create the mountpoint and mount the share!
 						# We should store the username and password into a plist in the ~/Library/Caches folder.
 						# Should we check to see if it already exists?  No, should probably have done that earlier.
